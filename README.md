@@ -6,6 +6,18 @@ A Home Assistant integration for communication with Skydance lighting Wi-Fi rela
 
 Based on [skydance](https://github.com/tomasbedrich/skydance) Python library.
 
+> **This is a fork of [tomasbedrich/home-assistant-skydance](https://github.com/tomasbedrich/home-assistant-skydance) (3.0.4) with a stability fix.**
+> The upstream integration could hang until it was reloaded by hand: commands were
+> written and read without a shared lock and without any timeout, so a relay that
+> stopped answering blocked the entity forever. It also raised `ConfigEntryNotReady`
+> from inside the `light` platform, which in current Home Assistant versions leaves
+> the platform half-loaded after an unsuccessful start.
+>
+> Changes: serialized request/response transactions with per-command timeouts and
+> automatic reconnects, frame-based response matching, connectivity check moved to
+> `async_setup_entry`, and a one-minute keepalive ping. See the commit message for
+> details. Untested against real hardware other than the author's own relay.
+
 
 ## Usage
 
